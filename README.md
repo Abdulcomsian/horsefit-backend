@@ -1,3 +1,3 @@
 ## Drop
 
-Custom Drop Web and App Development By Team BiG
+Custom Mobile and App Development By ...
