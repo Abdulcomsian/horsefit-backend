@@ -1,3 +1,1 @@
-## Drop
-
-Custom Mobile and App Development By ...
+Custom Mobile App Development By Team
