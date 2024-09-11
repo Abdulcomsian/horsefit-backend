@@ -6,6 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import InputSelect from "@/Components/InputSelect.vue";
+import { ref } from 'vue';
 
 const props = defineProps({
     roles: {
@@ -20,7 +21,14 @@ const form = useForm({
     password: '',
     password_confirmation: '',
     role: '',
+    date_of_birth: '',
+    gender: '',
 });
+
+const genderList = ref([
+    {'id' : 'Male', 'name' : 'Male'},
+    {'id' : 'Female', 'name' : 'Female'},
+])
 
 const submit = () => {
     form.post(route('register'), {
@@ -63,7 +71,20 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
             <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="gender" value="Gender" />
+
+                <InputSelect
+                    id="gender"
+                    v-model="form.gender"
+                    :options="genderList"
+                    placeholder="Choose a gender"
+                    class="mt-1 block w-full"
+                  />
+
+                <InputError class="mt-2" :message="form.errors.gender" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="role" value="Role" />
 
                 <InputSelect
                     id="role"
@@ -74,6 +95,18 @@ const submit = () => {
                   />
 
                 <InputError class="mt-2" :message="form.errors.role" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="dob" value="Date of birth" />
+
+                <TextInput
+                    id="dob"
+                    type="date"
+                    class="mt-1 block w-full"
+                    v-model="form.date_of_birth"
+                />
+
+                <InputError class="mt-2" :message="form.errors.date_of_birth" />
             </div>
 
             <div class="mt-4">

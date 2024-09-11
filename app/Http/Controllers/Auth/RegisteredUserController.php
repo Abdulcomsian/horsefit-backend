@@ -37,13 +37,19 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => 'required|exists:roles,id'
+            'role' => 'required|exists:roles,id',
+            'date_of_birth' => 'required|date',
+            'gender' => 'required|in:Male,Female',
+            // 'image' => 'required',image is required only for API, I did not make functionality for Web
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'date_of_birth' => $request->date_of_birth,
+            'gender' => $request->gender,
+            'image' => $request->image ?? '',
         ]);
 
         $user->assignRole($request->role);

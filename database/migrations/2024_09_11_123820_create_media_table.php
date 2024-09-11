@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('gender', 20)->nullable()->after('email'); 
-            $table->date('date_of_birth')->nullable()->after('gender');
+        Schema::create('media', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
+            $table->string('media_link');
+            $table->string('type', 20)->default('image');
+            $table->timestamps();
         });
     }
 
@@ -22,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['gender', 'date_of_birth']);
-        });
+        Schema::dropIfExists('media');
     }
 };
