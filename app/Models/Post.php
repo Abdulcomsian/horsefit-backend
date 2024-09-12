@@ -13,6 +13,7 @@ class Post extends Model
         'body',
         'user_id',
         'status',
+        'visibility', //'public', 'friends', 'friends_followers', 'selected_friends,
     ];
 
     public function user()
@@ -34,4 +35,11 @@ class Post extends Model
     {
         return $this->hasMany(Media::class);
     }
+    
+    // post visible to these friends if selected_friends selected
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'post_visibility_friends', 'post_id', 'user_id');
+    }
+
 }

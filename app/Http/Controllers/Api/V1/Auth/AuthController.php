@@ -55,7 +55,8 @@ class AuthController extends Controller
             if ($user) {
                 if (Hash::check($request->password, $user->password)) {
                     $token = $user->createToken(
-                        'HorseFit'
+                        //'HorseFit'
+                        'HorseFit', ['*'], now()->addHours(2)
                     )->plainTextToken;
                     $response = [
                         'user' => $user,
@@ -120,7 +121,8 @@ class AuthController extends Controller
             $user->assignRole((int) $request->role);
 
             $token = $user->createToken(
-                        'HorseFit',
+                        //'HorseFit'
+                        'HorseFit', ['*'], now()->addHours(2),
                     )->plainTextToken;
             $response = [
                 'user' => $user,

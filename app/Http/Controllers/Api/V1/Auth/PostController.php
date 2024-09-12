@@ -11,8 +11,11 @@ use App\Models\Sanctum\PersonalAccessToken;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class PostController extends Controller
+class PostController extends Controller implements HasMiddleware
 {
     protected $user;
 
@@ -25,24 +28,24 @@ class PostController extends Controller
                 if ($accessToken) {
                     $this->user = $accessToken->tokenable;
                 } else {
-                    $this->user = null;
+                    throw new AuthenticationException('Token not valid or user not found');
                 }
             } else {
-                $this->user = null;
+                throw new AuthenticationException('Token not provided');
             }
         } catch (Exception $e) {
-           $this->user = null;
+            throw new AuthenticationException('Token not valid or user not found');
         }
     }
-    public function userNotFound()
+
+    public static function middleware(): array
     {
-        if (!$this->user) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Token not valid or user not found!',
-                'data' => null,
-            ], 401);
-        }
+        return [
+            'auth:sanctum',
+            new Middleware('permission:Create Post', only: ['storePost', 'getMediaTypeFromUrl']),
+            new Middleware('permission:Create Post Comment', only: ['postComment']),
+            new Middleware('permission:Like Post', only: ['togglePostLike']),
+        ];
     }
 
     protected function getMediaTypeFromUrl($url)
@@ -63,14 +66,15 @@ class PostController extends Controller
         return 'unknown';
     }
 
-
     public function storePost(Request $request)
     {
-        $this->userNotFound();
         try {
             $validator = Validator::make($request->all(), [
                 'body' => 'required',
                 'post_media' => 'nullable|array',
+                'visibility' => 'required|in:public,friends,friends_followers,selected_friends',
+                'selected_friends' => 'required_if:visibility,selected_friends|array',
+                'selected_friends.*' => 'exists:users,id',
     
             ]);
             if ($validator->fails()) {
@@ -84,7 +88,11 @@ class PostController extends Controller
                 'body' => $request->body,
                 'user_id' => $this->user?->id,
                 'status' => true,
+                'visibility' => $request->visibility,
             ]);
+            if ($request->visibility === 'selected_friends') {
+                $post->friends()->sync($request->selected_friends);
+            }
             if ($request->has('post_media')) {
                 foreach ($request->input('post_media') as $media_link) {
                     $type = $this->getMediaTypeFromUrl($media_link);
@@ -111,7 +119,6 @@ class PostController extends Controller
 
     public function togglePostLike(Request $request)
     {
-        $this->userNotFound();
         try {
             $validator = Validator::make($request->all(), [
                 'post_id' => 'required|exists:posts,id',
@@ -158,7 +165,6 @@ class PostController extends Controller
 
     public function postComment(Request $request)
     {
-        $this->userNotFound();
         try {
             $validator = Validator::make($request->all(), [
                 'post_id' => 'required|exists:posts,id',
