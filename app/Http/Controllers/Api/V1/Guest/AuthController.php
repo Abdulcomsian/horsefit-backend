@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Auth;
+namespace App\Http\Controllers\Api\V1\Guest;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
@@ -23,7 +23,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'success',
-                'data' => Role::get(['id', 'name']),
+                'data' => Role::where('name', '!=', 'Super Admin')->get(['id', 'name']),
             ], 200);
 
         } catch(Exception $e) {
@@ -34,6 +34,7 @@ class AuthController extends Controller
             ], 400);
         }
     }
+
     public function login(Request $request)
     {
         try {
@@ -51,7 +52,6 @@ class AuthController extends Controller
             }
             $user = User::where('email', $request->email)
             ->first();
-    
             if ($user) {
                 if (Hash::check($request->password, $user->password)) {
                     $token = $user->createToken(
@@ -89,6 +89,7 @@ class AuthController extends Controller
             ], 400);
         }
     }
+
     public function register(Request $request)
     {
         try {
@@ -97,7 +98,7 @@ class AuthController extends Controller
                 'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
                 'role' => 'required|exists:roles,id',
-                'date_of_birth' => 'required|date',
+                'date_of_birth' => 'required|date|before:today',
                 'gender' => 'required|in:Male,Female',
                 'image' => 'required', // Expected image is a string
             ]);
@@ -143,6 +144,7 @@ class AuthController extends Controller
             ], 400);
         }
     }
+    
     public function forgotPassword(Request $request)
     {
         try {

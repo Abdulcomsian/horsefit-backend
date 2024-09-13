@@ -22,7 +22,7 @@ class RegisteredUserController extends Controller
     public function create(): Response
     {
         return Inertia::render('Auth/Register', [
-            'roles' => Role::get(['id', 'name']),
+            'roles' => Role::where('name', '!=', 'Super Admin')->get(['id', 'name']),
         ]);
     }
 

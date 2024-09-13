@@ -4,7 +4,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
-import InputSelect from "@/Components/InputSelect.vue";
+import MultiSelect from "@/Components/MultiSelect.vue";
+import { onMounted } from 'vue';
 
 const props = defineProps({
     mustVerifyEmail: {
@@ -24,7 +25,16 @@ const user = usePage().props.auth.user;
 const form = useForm({
     name: user.name,
     email: user.email,
-    role: user.roles && user.roles.length > 0 ? user.roles[0].id : '',
+    role: [],
+});
+
+onMounted( () => {
+    if (user.roles && user.roles.length > 0) {
+        // form.role = user.roles.map(role => role.id);
+        form.role = user.roles.map(role => {
+            return { id: role.id, name: role.name };
+        });
+    } 
 });
 </script>
 
@@ -73,11 +83,12 @@ const form = useForm({
             <div>
                 <InputLabel for="status" value="Status" />
 
-                <InputSelect
+                <MultiSelect
                     id="role"
                     v-model="form.role"
                     :options="props.roles"
                     placeholder="Choose a role"
+                    :track-by="id"
                     class="mt-1 block w-full"
                   />
 

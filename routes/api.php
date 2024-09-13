@@ -1,20 +1,22 @@
 <?php
 
-use App\Http\Controllers\Api\V1\Auth\AuthController;
-use App\Http\Controllers\Api\V1\Auth\FriendAndFollowerController;
 use App\Http\Controllers\Api\V1\Auth\LogoutController;
+use App\Http\Controllers\Api\V1\Auth\FriendAndFollowerController;
+use App\Http\Controllers\Api\V1\Auth\HorseController;
 use App\Http\Controllers\Api\V1\Auth\PostController;
+use App\Http\Controllers\Api\V1\Auth\UserController;
+use App\Http\Controllers\Api\V1\Guest\AuthController as GuestAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // Routes without auth
 Route::group(['prefix' => 'v1', 'as' => 'api.'], function () {
 
-    Route::get('get-roles-list', [AuthController::class, 'getRoleList'])->name('get-roles-list');
+    Route::get('get-roles-list', [GuestAuthController::class, 'getRoleList'])->name('get-roles-list');
     
-    Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::post('register', [AuthController::class, 'register'])->name('register');
-    Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
+    Route::post('login', [GuestAuthController::class, 'login'])->name('login');
+    Route::post('register', [GuestAuthController::class, 'register'])->name('register');
+    Route::post('forgot-password', [GuestAuthController::class, 'forgotPassword'])->name('forgot-password');
 
 });
 
@@ -22,6 +24,8 @@ Route::group(['prefix' => 'v1', 'as' => 'api.'], function () {
 Route::group(['prefix' => 'v1', 'as' => 'api', 'middleware' => ['auth:sanctum']], function () {
 
     Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
+    Route::post('change-password', [UserController::class, 'changePassword'])->name('change-password');
+    Route::put('update-profile', [UserController::class, 'updateProfile'])->name('update-profile');
 
     Route::post('post/store', [PostController::class, 'storePost'])->name('post.store');
     Route::post('post/toggle-like', [PostController::class, 'togglePostLike'])->name('post.toggle-like');
@@ -32,6 +36,16 @@ Route::group(['prefix' => 'v1', 'as' => 'api', 'middleware' => ['auth:sanctum']]
     Route::post('/user/toggle-follow', [FriendAndFollowerController::class, 'togglefollowUser'])->name('user.toggle-follow');
     Route::get('/user/followers', [FriendAndFollowerController::class, 'getAllFollowers'])->name('user.followers');
     Route::get('/user/followings', [FriendAndFollowerController::class, 'getAllFollowings'])->name('user.followings');
+    Route::get('/user/friends', [FriendAndFollowerController::class, 'getUserFriends'])->name('user.friends');
     Route::get('/user/pending-friend-requests', [FriendAndFollowerController::class, 'getUserPendingFriendRequest'])->name('user.pending-friend-requests');
     Route::get('/user/get-friend-requests', [FriendAndFollowerController::class, 'getUserReceivedFriendRequest'])->name('user.get-friend-requests');
+    
+    Route::post('/get-user-list', [UserController::class, 'getUserList'])->name('get-user-list');
+    Route::get('/get-trainers-and-owners', [UserController::class, 'getTrainersAndOwnersOnly'])->name('get-trainers-and-owners');
+    Route::post('/assign-new-role', [UserController::class, 'assignNewRole'])->name('assign-new-role');
+
+    Route::post('/all-horses/list', [HorseController::class, 'allHorses'])->name('all-horses.list');
+    Route::post('/my-horses/list', [HorseController::class, 'myHorses'])->name('my-horses.list');
+    Route::post('/horse/store', [HorseController::class, 'storeHorse'])->name('horse.store');
+    Route::put('/horse/update', [HorseController::class, 'updateHorse'])->name('horse.update');
 });

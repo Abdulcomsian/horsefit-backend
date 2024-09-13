@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\QueryBuilders\UserBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -37,6 +39,11 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->hasRole('Super Admin');
     }
 
     public function comments()
@@ -87,6 +94,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'followed_id')
         ->select('users.id', 'users.name', 'users.email', 'users.image');
+        //->with('roles'); will apply this if required
         // if remove above line all columns will be returned
     }
 
@@ -94,9 +102,11 @@ class User extends Authenticatable
     // {
     // it is not working
     //     return $this->belongsToMany(User::class, 'friend_requests', 'sender_id', 'receiver_id')
+    //         ->withPivotPivot('status')
     //         ->wherePivot('status', 'accepted')
     //         ->union(
     //             $this->belongsToMany(User::class, 'friend_requests', 'receiver_id', 'sender_id')
+    //                     ->withPivotPivot('status')
     //                     ->wherePivot('status', 'accepted')
     //         );
     // }
@@ -115,6 +125,21 @@ class User extends Authenticatable
             ->select('users.id', 'users.name', 'users.email', 'users.image');
 
         return $friendsSent->union($friendsReceived)->get();
+    }
+
+    public function horses()
+    {
+        return $this->hasMany(Horse::class);
+    }
+
+    public function followedHorses()
+    {
+        return $this->belongsToMany(Horse::class, 'horse_followers', 'user_id', 'horse_id');
+    }
+
+    public function newEloquentBuilder($query)
+    {
+        return new UserBuilder($query);
     }
 
 }

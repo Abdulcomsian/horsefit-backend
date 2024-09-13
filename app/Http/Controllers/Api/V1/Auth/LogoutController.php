@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Http\Controllers\Controller;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Auth\AuthenticationException;
 use Laravel\Sanctum\PersonalAccessToken;
 

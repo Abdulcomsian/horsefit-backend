@@ -19,10 +19,15 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        if (auth()->user()->isSuperAdmin()) {
+            $roles = Role::get(['id', 'name']);
+        } else {
+            $roles = Role::where('name', '!=', 'Super Admin')->get(['id', 'name']);
+        }
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
-            'roles' => Role::get(['id', 'name']),
+            'roles' => $roles,
         ]);
     }
 
@@ -40,7 +45,8 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        $request->user()->roles()->sync([$request->role]);
+        $roleIds = collect($request->role)->pluck('id')->toArray();
+        $request->user()->roles()->sync($roleIds);
 
         return Redirect::route('profile.edit');
     }
