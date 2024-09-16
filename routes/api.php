@@ -48,4 +48,8 @@ Route::group(['prefix' => 'v1', 'as' => 'api', 'middleware' => ['auth:sanctum']]
     Route::post('/my-horses/list', [HorseController::class, 'myHorses'])->name('my-horses.list');
     Route::post('/horse/store', [HorseController::class, 'storeHorse'])->name('horse.store');
     Route::put('/horse/update', [HorseController::class, 'updateHorse'])->name('horse.update');
+    Route::post('/horse/toggle-follow', [HorseController::class, 'toggleFollowHorse'])->name('horse.toggle-follow');
+    Route::post('/horse/assign-trainer', [HorseController::class, 'assignTrainerToHorse'])->name('horse.assign-trainer');
+    Route::post('/horse/trainer', [HorseController::class, 'getHorseTrainer'])->name('horse.trainer');
+    Route::post('/user/horses-trained', [HorseController::class, 'getHorsesTrainedByUser'])->name('horse.horses-trained');
 });

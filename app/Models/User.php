@@ -137,6 +137,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Horse::class, 'horse_followers', 'user_id', 'horse_id');
     }
 
+    public function horsesTrained()
+    {
+        return $this->hasMany(Horse::class, 'trainer_id');
+    }
+
     public function newEloquentBuilder($query)
     {
         return new UserBuilder($query);

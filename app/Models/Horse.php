@@ -20,17 +20,23 @@ class Horse extends Model
         'blood_type',
         'mother_name',
         'father_name',
-        'image'
+        'image',
+        'trainer_id',
     ];
 
-    public function user()
+    public function owner()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function followers()
     {
         return $this->belongsToMany(User::class, 'horse_followers', 'horse_id', 'user_id');
+    }
+
+    public function trainer()
+    {
+        return $this->belongsTo(User::class, 'trainer_id');
     }
 
     public function newEloquentBuilder($query)
