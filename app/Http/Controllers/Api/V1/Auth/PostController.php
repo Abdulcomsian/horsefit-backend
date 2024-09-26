@@ -72,7 +72,7 @@ class PostController extends Controller implements HasMiddleware
             $validator = Validator::make($request->all(), [
                 'body' => 'required',
                 'post_media' => 'nullable|array',
-                'visibility' => 'required|in:public,friends,friends_followers,selected_friends',
+                'visibility' => 'required|in:public,friends,friends_followers,selected_friends,private',
                 'selected_friends' => 'required_if:visibility,selected_friends|array',
                 'selected_friends.*' => 'exists:users,id',
     

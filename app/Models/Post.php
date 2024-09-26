@@ -13,7 +13,7 @@ class Post extends Model
         'body',
         'user_id',
         'status',
-        'visibility', //'public', 'friends', 'friends_followers', 'selected_friends,
+        'visibility', //'public', 'friends', 'friends_followers', 'selected_friends, private
     ];
 
     public function user()
