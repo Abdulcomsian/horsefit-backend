@@ -60,6 +60,7 @@ class UserController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -71,15 +72,17 @@ class UserController extends Controller implements HasMiddleware
     
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'Password changed successfully',
                 'data' => null,
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -98,6 +101,7 @@ class UserController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(), // Can use this if have to return first error only : $validator->errors()->first()
                     'data' => null,
                 ], 422);
@@ -116,15 +120,17 @@ class UserController extends Controller implements HasMiddleware
     
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'User Information upddated successfully',
                 'data' => $this->user?->load('roles'),
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -134,15 +140,17 @@ class UserController extends Controller implements HasMiddleware
             $usersLists = User::filters()->with('roles:id,name')->get(['id', 'name', 'email', 'image']);
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'User Information upddated successfully',
                 'data' => $usersLists,
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -158,6 +166,7 @@ class UserController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -170,15 +179,17 @@ class UserController extends Controller implements HasMiddleware
             }
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'User Information upddated successfully',
                 'data' => $findUser->load('roles:id,name'),
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -188,15 +199,17 @@ class UserController extends Controller implements HasMiddleware
             $usersLists = User::trainerAndOwnerList()->with('roles:id,name')->get(['id', 'name', 'email', 'image']);
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'User Information upddated successfully',
                 'data' => $usersLists,
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 }

@@ -36,6 +36,7 @@ class LogoutController extends Controller
             $this->user?->tokens()->delete();
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'User logged out successfully',
                 'data' => null,
             ], 200);
@@ -43,9 +44,10 @@ class LogoutController extends Controller
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 }

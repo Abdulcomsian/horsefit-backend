@@ -63,7 +63,7 @@ class PostController extends Controller implements HasMiddleware
             return 'video';
         }
 
-        return 'unknown';
+        return 'image';
     }
 
     public function storePost(Request $request)
@@ -80,6 +80,7 @@ class PostController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -105,15 +106,17 @@ class PostController extends Controller implements HasMiddleware
             }
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'Post created successfully',
                 'data' => null,
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -126,6 +129,7 @@ class PostController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -139,6 +143,7 @@ class PostController extends Controller implements HasMiddleware
                 $existingLike->delete();
                 return response()->json([
                     'status' => true,
+                    'code' => 200,
                     'message' => 'Post unliked successfully',
                     'data' => null,
                 ], 200);
@@ -149,6 +154,7 @@ class PostController extends Controller implements HasMiddleware
                 ]);
                 return response()->json([
                     'status' => true,
+                    'code' => 200,
                     'message' => 'Post liked successfully',
                     'data' => null,
                 ], 200);
@@ -157,9 +163,10 @@ class PostController extends Controller implements HasMiddleware
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -186,6 +193,7 @@ class PostController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -198,16 +206,17 @@ class PostController extends Controller implements HasMiddleware
             ]);
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'Comment added successfully',
                 'data' => null,
             ], 200);
-                return response()->json(['message' => 'Post liked successfully']);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 

@@ -22,6 +22,7 @@ class AuthController extends Controller
         try {
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'success',
                 'data' => Role::where('name', '!=', 'Super Admin')->get(['id', 'name']),
             ], 200);
@@ -29,9 +30,10 @@ class AuthController extends Controller
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -46,6 +48,7 @@ class AuthController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(), // Can use this if have to return first error only : $validator->errors()->first()
                     'data' => null,
                 ], 422);
@@ -64,12 +67,14 @@ class AuthController extends Controller
                     ];
                     return response()->json([
                         'status' => true,
+                        'code' => 200,
                         'message' => 'success',
                         'data' => $response,
                     ], 200);
                 } else {
                     return response()->json([
                         'status' => false,
+                        'code' => 406,
                         'message' => 'Password mismatch',
                         'data' => null,
                     ], 406); // Not acceptable
@@ -77,6 +82,7 @@ class AuthController extends Controller
             } else {
                 return response()->json([
                     'status' => false,
+                    'code' => 404,
                     'message' => 'User Not found or have been deleted!',
                     'data' => null,
                 ], 404);
@@ -84,9 +90,10 @@ class AuthController extends Controller
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -106,6 +113,7 @@ class AuthController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(), // Can use this if have to return first error only : $validator->errors()->first()
                     'data' => null,
                 ], 422);
@@ -132,6 +140,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'success',
                 'data' => $response,
             ], 200);
@@ -139,9 +148,10 @@ class AuthController extends Controller
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
     
@@ -155,6 +165,7 @@ class AuthController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -164,15 +175,17 @@ class AuthController extends Controller
             );
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'We have e-mailed you a password reset link!',
                 'data' => null,
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 }

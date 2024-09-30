@@ -70,6 +70,7 @@ class HorseController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -81,15 +82,17 @@ class HorseController extends Controller implements HasMiddleware
 
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'Horse created successfully',
                 'data' => $horse,
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -113,6 +116,7 @@ class HorseController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -123,15 +127,17 @@ class HorseController extends Controller implements HasMiddleware
 
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'Horse updated successfully',
                 'data' => $horse,
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -141,15 +147,17 @@ class HorseController extends Controller implements HasMiddleware
             $horses = Horse::filters()->where('user_id', $this->user?->id)->get();
             return response()->json([
                 'status' => true,
+                'code' => 500,
                 'message' => 'success',
                 'data' => $horses,
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -159,15 +167,17 @@ class HorseController extends Controller implements HasMiddleware
             $horses = Horse::filters()->get();
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'success',
                 'data' => $horses,
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -180,6 +190,7 @@ class HorseController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -188,6 +199,7 @@ class HorseController extends Controller implements HasMiddleware
                 $this->user?->followedHorses()->detach($request->horse_id);
                 return response()->json([
                     'status' => true,
+                    'code' => 200,
                     'message' => 'Unfollowed the horse successfully',
                     'data' => null
                 ], 200);
@@ -195,6 +207,7 @@ class HorseController extends Controller implements HasMiddleware
                 $this->user?->followedHorses()->attach($request->horse_id);
                 return response()->json([
                     'status' => true,
+                    'code' => 200,
                     'message' => 'Followed the horse successfully',
                     'data' => null
                 ], 200);
@@ -202,9 +215,10 @@ class HorseController extends Controller implements HasMiddleware
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -218,6 +232,7 @@ class HorseController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -230,6 +245,7 @@ class HorseController extends Controller implements HasMiddleware
             if (!$trainer) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => 'Selected user is not a trainer',
                     'data' => null,
                 ], 422);
@@ -243,15 +259,17 @@ class HorseController extends Controller implements HasMiddleware
             $horse->save();
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => $currentTrainerID ? 'Horse trainer updated successfully' : 'Horse trainer added successfully',
                 'data' => null
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -264,6 +282,7 @@ class HorseController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -276,6 +295,7 @@ class HorseController extends Controller implements HasMiddleware
             if (!$trainer) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => 'Selected user is not a trainer',
                     'data' => null,
                 ], 422);
@@ -284,12 +304,14 @@ class HorseController extends Controller implements HasMiddleware
             if ($trainer->horsesTrained->isNotEmpty()) {
                 return response()->json([
                     'status' => true,
+                    'code' => 200,
                     'message' => 'Horses trained by the user retrieved successfully',
                     'data' => $trainer->horsesTrained,
                 ], 200);
             } else {
                 return response()->json([
                     'status' => true,
+                    'code' => 200,
                     'message' => 'This user is not training any horses currently',
                     'data' => null,
                 ], 200);
@@ -297,9 +319,10 @@ class HorseController extends Controller implements HasMiddleware
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -312,6 +335,7 @@ class HorseController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -321,12 +345,14 @@ class HorseController extends Controller implements HasMiddleware
             if ($horse->trainer) {
                 return response()->json([
                     'status' => true,
+                    'code' => 200,
                     'message' => 'Trainer retrieved successfully',
                     'data' => $horse->trainer,
                 ], 200);
             } else {
                 return response()->json([
                     'status' => true,
+                    'code' => 200,
                     'message' => 'This horse does not have a trainer assigned yet',
                     'data' => null,
                 ], 200);
@@ -334,9 +360,10 @@ class HorseController extends Controller implements HasMiddleware
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 

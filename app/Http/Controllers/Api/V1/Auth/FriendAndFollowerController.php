@@ -61,6 +61,7 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -68,6 +69,7 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
             if ($this->user?->id == $request->receiver_id) {
                 return response()->json([
                     'status' => false,
+                    'code' => 405,
                     'message' => "You can't friend request to yourself",
                     'data' => null,
                 ], 405); // method not Aallowed
@@ -80,6 +82,7 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
             if ($friendRequest) {
                 return response()->json([
                     'status' => false,
+                    'code' => 405,
                     'message' => 'Friend request already sent or received.',
                     'data' => null,
                 ], 405); // method not Aallowed
@@ -90,6 +93,7 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
             if ($receivedFriendRequest) {
                 return response()->json([
                     'status' => false,
+                    'code' => 405,
                     'message' => 'Friend request already sent or received.',
                     'data' => null,
                 ], 405); // method not Aallowed
@@ -102,15 +106,17 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
             ]);
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => 'Friend request sent successfully',
                 'data' => null,
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -124,6 +130,7 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -139,6 +146,7 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
             if ($friendRequest->status === 'accepted') {
                 return response()->json([
                     'status' => false,
+                    'code' => 403,
                     'message' => "Accepted request can't be declined or acctepted",
                     'data' => null
                 ], 403);
@@ -153,15 +161,17 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
             }
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => "Friend request {$request->status}",
                 'data' => null,
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -174,6 +184,7 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
+                    'code' => 422,
                     'message' => $validator->errors(),
                     'data' => null,
                 ], 422);
@@ -181,6 +192,7 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
             if ($request->following_id == $this->user?->id) {
                 return response()->json([
                     'status' => false,
+                    'code' => 403,
                     'message' => "You can't follow or unfollow yourself",
                     'data' => null
                 ], 403);
@@ -193,6 +205,7 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
                 $existingFollow->delete();
                 return response()->json([
                     'status' => true,
+                    'code' => 200,
                     'message' => "Unfollowed the user",
                     'data' => null,
                 ], 200);
@@ -203,6 +216,7 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
                 ]);
                 return response()->json([
                     'status' => true,
+                    'code' => 200,
                     'message' => "Followed the user",
                     'data' => null,
                 ], 200);
@@ -210,9 +224,10 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -221,15 +236,17 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
         try {
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => "success",
                 'data' => $this->user?->followers,
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -238,15 +255,17 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
         try {
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => "success",
                 'data' => $this->user?->followings,
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -255,15 +274,17 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
         try {
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => "success",
                 'data' => $this->user?->friends(),
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -272,15 +293,17 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
         try {
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => "success",
                 'data' => $this->user?->sentFriendRequests->load('receiver:id,name,email,image'),
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
@@ -289,15 +312,17 @@ class FriendAndFollowerController extends Controller implements HasMiddleware
         try {
             return response()->json([
                 'status' => true,
+                'code' => 200,
                 'message' => "success",
                 'data' => $this->user?->receivedFriendRequests->load('sender:id,name,email,image'),
             ], 200);
         } catch(Exception $e) {
             return response()->json([
                 'status' => false,
+                'code' => 500,
                 'message' => $e->getMessage(),
                 'data' => null,
-            ], 400);
+            ], 500);
         }
     }
 
