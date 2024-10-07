@@ -6,11 +6,15 @@ use App\Http\Controllers\Api\V1\Auth\HorseController;
 use App\Http\Controllers\Api\V1\Auth\PostController;
 use App\Http\Controllers\Api\V1\Auth\UserController;
 use App\Http\Controllers\Api\V1\Guest\AuthController as GuestAuthController;
+use App\Http\Controllers\Api\V1\MediaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // Routes without auth
 Route::group(['prefix' => 'v1', 'as' => 'api.'], function () {
+
+    Route::post('/upload-file', [MediaController::class, 'uploadFile'])->name('upload.file');
+    Route::post('/delete-file', [MediaController::class, 'deleteFile'])->name('delete.file');
 
     Route::get('get-roles-list', [GuestAuthController::class, 'getRoleList'])->name('get-roles-list');
     

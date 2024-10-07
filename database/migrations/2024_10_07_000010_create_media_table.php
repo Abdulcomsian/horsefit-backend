@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('media');
+        
         Schema::create('media', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
-            $table->string('media_link');
+            $table->string('model_type');
+            $table->integer('model_id');
+            $table->string('media_link')->nullable();
             $table->string('type', 20)->default('image');
             $table->timestamps();
         });

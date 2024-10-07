@@ -98,7 +98,8 @@ class PostController extends Controller implements HasMiddleware
                 foreach ($request->input('post_media') as $media_link) {
                     $type = $this->getMediaTypeFromUrl($media_link);
                     Media::create([
-                        'post_id' => $post->id,
+                        'model_id' => $post->id,
+                        'model_type' => 'Post',
                         'media_link' => $media_link,
                         'type' => $type,
                     ]);

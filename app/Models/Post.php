@@ -31,10 +31,19 @@ class Post extends Model
         return $this->hasMany(Like::class);
     }
 
+    // public function media()
+    // {
+    //     return $this->hasMany(Media::class);
+    // }
+
+    // Polymorphic relationship for media
     public function media()
     {
-        return $this->hasMany(Media::class);
+        return $this->morphMany(Media::class, 'model');
     }
+
+    // $post = Post::find(1); //use this as example
+    // $media = $post->media; 
     
     // post visible to these friends if selected_friends selected
     public function friends()

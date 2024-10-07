@@ -12,13 +12,19 @@ class Media extends Model
     protected $table = 'media';
 
     protected $fillable = [
-        'post_id', 
+        'model_type', //Post, User etc
+        'model_id',
         'media_link', 
-        'type', // image or video etc
+        'type',
     ];
 
-    public function post()
+    // Polymorphic relationship
+    public function model()
     {
-        return $this->belongsTo(Post::class);
+        return $this->morphTo();
     }
+
+    // $media = Media::find(1);
+    // $relatedModel = $media->model; //use this as example
+    
 }
