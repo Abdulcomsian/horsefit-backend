@@ -20,7 +20,7 @@ class MediaController extends Controller
             return response()->json([
                 'status' => false,
                 'code' => 422,
-                'message' => $validator->errors(),
+                'message' => $validator->errors()->first(),
                 'data' => null,
             ], 422);
         }
@@ -52,7 +52,7 @@ class MediaController extends Controller
             return response()->json([
                 'status' => false,
                 'code' => 422,
-                'message' => $validator->errors(),
+                'message' => $validator->errors()->first(),
                 'data' => null,
             ], 422);
         }

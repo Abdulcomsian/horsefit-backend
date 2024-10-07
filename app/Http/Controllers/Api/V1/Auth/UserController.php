@@ -61,7 +61,7 @@ class UserController extends Controller implements HasMiddleware
                 return response()->json([
                     'status' => false,
                     'code' => 422,
-                    'message' => $validator->errors(),
+                    'message' => $validator->errors()->first(),
                     'data' => null,
                 ], 422);
             }
@@ -102,7 +102,7 @@ class UserController extends Controller implements HasMiddleware
                 return response()->json([
                     'status' => false,
                     'code' => 422,
-                    'message' => $validator->errors(), // Can use this if have to return first error only : $validator->errors()->first()
+                    'message' => $validator->errors()->first(),
                     'data' => null,
                 ], 422);
             }
@@ -167,7 +167,7 @@ class UserController extends Controller implements HasMiddleware
                 return response()->json([
                     'status' => false,
                     'code' => 422,
-                    'message' => $validator->errors(),
+                    'message' => $validator->errors()->first(),
                     'data' => null,
                 ], 422);
             }
