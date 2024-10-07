@@ -26,6 +26,8 @@ class User extends Authenticatable
         'date_of_birth',
         'password',
         'image',
+        'provider_id',
+        'provider', // facebook, google, apple etc
     ];
 
     protected $hidden = [

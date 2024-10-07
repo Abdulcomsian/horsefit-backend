@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\Auth\HorseController;
 use App\Http\Controllers\Api\V1\Auth\PostController;
 use App\Http\Controllers\Api\V1\Auth\UserController;
 use App\Http\Controllers\Api\V1\Guest\AuthController as GuestAuthController;
+use App\Http\Controllers\Api\V1\Guest\SocialAuthController;
 use App\Http\Controllers\Api\V1\MediaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.'], function () {
     
     Route::post('login', [GuestAuthController::class, 'login'])->name('login');
     Route::post('register', [GuestAuthController::class, 'register'])->name('register');
+    Route::post('social-register', [SocialAuthController::class, 'socialRegister']);
     Route::post('forgot-password', [GuestAuthController::class, 'forgotPassword'])->name('forgot-password');
 
 });
