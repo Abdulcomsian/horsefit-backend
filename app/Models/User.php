@@ -28,6 +28,7 @@ class User extends Authenticatable
         'image',
         'provider_id',
         'provider', // facebook, google, apple etc
+        'fcm_token',
     ];
 
     protected $hidden = [

@@ -49,7 +49,15 @@ class SocialAuthController extends Controller
                 'email' => $socialUser->getEmail(),
                 'provider_id' => $socialUser->getId(),
                 'provider' => $provider,
-                'image' => $socialUser->getAvatar(),
+                'image' => $socialUser->getAvatar() ?? '',
+                'password' => bcrypt(uniqid()),
+            ]);
+            dd([
+                'name' => $socialUser->getName(),
+                'email' => $socialUser->getEmail(),
+                'provider_id' => $socialUser->getId(),
+                'provider' => $provider,
+                'image' => $socialUser->getAvatar() ?? '',
                 'password' => bcrypt(uniqid()),
             ]);
             if (!$user) {
@@ -58,8 +66,9 @@ class SocialAuthController extends Controller
                     'email' => $socialUser->getEmail(),
                     'provider_id' => $socialUser->getId(),
                     'provider' => $provider,
-                    'image' => $socialUser->getAvatar(),
+                    'image' => $socialUser->getAvatar() ?? '',
                     'password' => bcrypt(uniqid()),
+                    'fcm_token' => $request->fcm_token ?? '',
                 ]);
 
                 $role = Role::where('name', 'User')->first();

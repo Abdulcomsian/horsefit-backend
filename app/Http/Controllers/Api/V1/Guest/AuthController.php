@@ -125,6 +125,7 @@ class AuthController extends Controller
                 'date_of_birth' => $request->date_of_birth,
                 'gender' => $request->gender,
                 'image' => $request->image ?? '',
+                'fcm_token' => $request->fcm_token ?? '',
             ]);
     
             $user->assignRole((int) $request->role);
