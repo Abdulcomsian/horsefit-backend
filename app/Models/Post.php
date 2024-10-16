@@ -9,11 +9,22 @@ class Post extends Model
 {
     use HasFactory;
 
+    public $table = 'posts';
+
     protected $fillable = [
         'body',
         'user_id',
         'status',
         'visibility', //'public', 'friends', 'friends_followers', 'selected_friends, private
+    ];
+
+    public const VISIBLITY_SELECT = [
+        '' => 'Select',
+        'public' => 'public',
+        'friends'   => 'friends',
+        'friends_followers'   => 'friends_followers',
+        'selected_friends'   => 'selected_friends',
+        'private'   => 'private',
     ];
 
     public function user()
@@ -31,19 +42,10 @@ class Post extends Model
         return $this->hasMany(Like::class);
     }
 
-    // public function media()
-    // {
-    //     return $this->hasMany(Media::class);
-    // }
-
-    // Polymorphic relationship for media
     public function media()
     {
         return $this->morphMany(Media::class, 'model');
     }
-
-    // $post = Post::find(1); //use this as example
-    // $media = $post->media; 
     
     // post visible to these friends if selected_friends selected
     public function friends()

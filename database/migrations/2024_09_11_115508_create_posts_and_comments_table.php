@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('body');
             $table->boolean('status')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('comments', function (Blueprint $table) {
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->integer('parent_id')->unsigned()->nullable();
             $table->text('body');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

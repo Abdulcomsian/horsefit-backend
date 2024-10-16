@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AbstractController;
 use App\Models\Horse;
 use App\Models\Sanctum\PersonalAccessToken;
 use App\Models\User;
@@ -13,7 +13,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class HorseController extends Controller implements HasMiddleware
+class HorseController extends AbstractController implements HasMiddleware
 {
     protected $user;
 

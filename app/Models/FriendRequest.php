@@ -9,6 +9,8 @@ class FriendRequest extends Model
 {
     use HasFactory;
 
+    protected $table = 'friend_requests';
+
     protected $fillable = [
         'sender_id',
         'receiver_id',

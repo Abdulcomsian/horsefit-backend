@@ -2,44 +2,32 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Role;
+use Gate;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
 
 class UpdateRoleRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
+    public function authorize()
     {
-        return true;
+        return Gate::allows('role_edit');
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'name' => ['required'],
-            'status' => ['required'],
-            'description' => ['required'],
-        ];
-        
-    }
-
-    /**
-     * Get the validation messages that apply to the request.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'name.required' => 'Name is required',
-            'status.required' => 'Status is required',
-            'description.required' => 'Description is required',
+            'name' => [
+                'string',
+                'required',
+            ],
+            'permissions.*' => [
+                'integer',
+            ],
+            'permissions' => [
+                'required',
+                'array',
+            ],
         ];
     }
 }

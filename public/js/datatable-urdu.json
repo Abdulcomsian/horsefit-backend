@@ -1,0 +1,21 @@
+{
+    "sEmptyTable": "کوئی دستیاب ڈیٹا نہیں",
+    "sInfo": "دکھا رہا ہے _START_ سے _END_ تک _TOTAL_ اندراجات",
+    "sInfoEmpty": "دکھا رہا ہے 0 سے 0 تک 0 اندراجات",
+    "sInfoFiltered": "(_MAX_ کل اندراجات میں سے فلٹر کیا گیا)",
+    "sLengthMenu": "دکھائیں _MENU_ اندراجات",
+    "sLoadingRecords": "لوڈ ہو رہا ہے...",
+    "sProcessing": "پروسیسنگ...",
+    "sSearch": "تلاش کریں:",
+    "sZeroRecords": "کوئی مماثل اندراجات نہیں ملے",
+    "oPaginate": {
+      "sFirst": "پہلا",
+      "sLast": "آخری",
+      "sNext": "اگلا",
+      "sPrevious": "پچھلا"
+    },
+    "oAria": {
+      "sSortAscending": ": ترتیب دیں بڑھتے ہوئے",
+      "sSortDescending": ": ترتیب دیں گھٹتے ہوئے"
+    }
+  }

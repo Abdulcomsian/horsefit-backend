@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AbstractController;
 use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Media;
@@ -15,7 +15,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class PostController extends Controller implements HasMiddleware
+class PostController extends AbstractController implements HasMiddleware
 {
     protected $user;
 
@@ -99,7 +99,7 @@ class PostController extends Controller implements HasMiddleware
                     $type = $this->getMediaTypeFromUrl($media_link);
                     Media::create([
                         'model_id' => $post->id,
-                        'model_type' => 'Post',
+                        'model_type' => 'App\Models\Post',
                         'media_link' => $media_link,
                         'type' => $type,
                     ]);

@@ -19,6 +19,8 @@ class User extends Authenticatable
         HasRoles,
         HasApiTokens;
 
+    protected $table = 'users';
+
     protected $fillable = [
         'name',
         'email',
@@ -145,9 +147,19 @@ class User extends Authenticatable
         return $this->hasMany(Horse::class, 'trainer_id');
     }
 
-    public function newEloquentBuilder($query)
+    public function ownedHorses()
     {
-        return new UserBuilder($query);
+        return $this->belongsToMany(Horse::class, 'horse_owner');
     }
+
+    public function trainedHorses()
+    {
+        return $this->belongsToMany(Horse::class, 'horse_trainer');
+    }
+
+    // public function newEloquentBuilder($query)
+    // {
+    //     return new UserBuilder($query);
+    // }
 
 }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('media_link')->nullable();
             $table->string('type', 20)->default('image');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

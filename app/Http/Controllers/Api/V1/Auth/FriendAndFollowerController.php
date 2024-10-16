@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AbstractController;
 use App\Models\Follower;
 use App\Models\FriendRequest;
 use App\Models\Sanctum\PersonalAccessToken;
@@ -14,7 +14,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
 
-class FriendAndFollowerController extends Controller implements HasMiddleware
+class FriendAndFollowerController extends AbstractController implements HasMiddleware
 {
     protected $user;
 

@@ -5,10 +5,35 @@ namespace App\Models;
 use App\QueryBuilders\HorseBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Horse extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
+    public $table = 'horses';
+
+    public const GENDER_SELECT = [
+        'Mare'     => 'Mare',
+        'Stallion' => 'Stallion',
+    ];
+
+    public const TYPE_SELECT = [
+        'Trotting' => 'Trotting',
+        'Riding'   => 'Riding',
+    ];
+
+    protected $dates = [
+        'date_of_birth',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
+    public const BLOOD_TYPE_SELECT = [
+        'Warm blooded' => 'Warm blooded',
+        'Cold blooded' => 'Cold blooded',
+    ];
 
     protected $fillable = [
         'user_id',
@@ -21,10 +46,12 @@ class Horse extends Model
         'mother_name',
         'father_name',
         'image',
-        'trainer_id',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
-    public function owner()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
@@ -34,13 +61,18 @@ class Horse extends Model
         return $this->belongsToMany(User::class, 'horse_followers', 'horse_id', 'user_id');
     }
 
-    public function trainer()
+    public function owners()
     {
-        return $this->belongsTo(User::class, 'trainer_id');
+        return $this->belongsToMany(User::class, 'horse_owner');
     }
 
-    public function newEloquentBuilder($query)
+    public function trainers()
     {
-        return new HorseBuilder($query);
+        return $this->belongsToMany(User::class, 'horse_trainer');
     }
+
+    // public function newEloquentBuilder($query)
+    // {
+    //     return new HorseBuilder($query);
+    // }
 }

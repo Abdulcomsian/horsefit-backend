@@ -27,14 +27,7 @@ class MediaController extends Controller
         $folder_name = $request->input('folder_name', 'posts');
         $file = $request->file('file_input');
         $path = $file->store($folder_name, env('FILESYSTEM_DRIVER', 'public'));
-        // $fileName = basename($path);
         $fullUrl = Storage::disk(env('FILESYSTEM_DRIVER'))->url($path);
-        // \Log::info([
-        //     'folder_name' => $folder_name,
-        //     'path' => $path,
-        //     'fileName' => $fileName,
-        //     'fullUrl' => $fullUrl,
-        // ]);
         return response()->json([
             'status' => true,
             'code' => 200,

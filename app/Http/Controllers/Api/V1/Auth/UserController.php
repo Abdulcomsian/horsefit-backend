@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AbstractController;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class UserController extends Controller implements HasMiddleware
+class UserController extends AbstractController implements HasMiddleware
 {
 
     protected $user;
@@ -108,8 +108,6 @@ class UserController extends Controller implements HasMiddleware
             }
             $this->user?->update([
                 'name' => $request->name,
-                // 'email' => $request->email,
-                'password' => Hash::make($request->password),
                 'date_of_birth' => $request->date_of_birth,
                 'gender' => $request->gender,
                 'image' => $request->image ?? '',

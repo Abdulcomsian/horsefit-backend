@@ -12,7 +12,7 @@ class Media extends Model
     protected $table = 'media';
 
     protected $fillable = [
-        'model_type', //Post, User etc
+        'model_type', //App\Models\Post, App\Models\User etc
         'model_id',
         'media_link', 
         'type',
